@@ -1,0 +1,10 @@
+*__pycache__*
+*.pyc
+
+
+.vscode/
+entorno/
+ent-virtual/
+ejemplos/
+old/
+
