@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ############################################################
-### CLIENTE TCP VERSION 3.0                              ###
+### CLIENTE TCP VERSION 3.1                              ###
 ############################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                      ###
 ### 27/01/2020                                           ###
@@ -16,6 +16,7 @@
 ############################################################
 
 import socket
+import queue
 import time
 from thread_admin import ThreadAdmin
 import cv2
@@ -25,6 +26,9 @@ class Cliente_TCP(object):
         self.soc = ""
         self.conexion       = False             # Estado de la conexion
         self.estado         = 0                 # Valor de utlimo estado
+        self.cola_codigo    = queue.Queue()     # Cola de devolucion de codigo
+        self.cola_mensaje   = queue.Queue()     # Cola de devolucion de detalle del codigo
+        self.mensaje_velocidad = 0.001          # delay en ms entre el loop de mensajes
         self.th_conexion    = ThreadAdmin()
         self.th_mensajes    = ThreadAdmin()
         #self.th_recepcion  = ''     # hilo de recepcion
@@ -35,6 +39,7 @@ class Cliente_TCP(object):
         self.binario        = False
 
     def config(self, Host, Puerto, Callback, Buffer = 1024, Binario=False):
+        print("config")
         self.host       = Host
         self.puerto     = int(Puerto)
         self.buffer     = Buffer
@@ -45,9 +50,10 @@ class Cliente_TCP(object):
         #Calback funcion ej: calback(codigo, mensaje): / calback(self, codigo, mensaje): /
 
     def conectar(self):
+        print("conectar")
         # control de mensajes si ya se encuentra en ejecucion
-        if not self.th_cola.state:
-            self.th_cola.start(self.__th_mensajes,'','MENSAJES-TCP', 3, self.callback)
+        if not self.th_mensajes.state:
+            self.th_mensajes.start(self.__th_mensajes,'','MENSAJES-TCP', 3, self.callback)
         if not self.conexion:
             self.th_conexion.start(self.__th_conectar,'','CONEXION-TCP', 10)
         else:
@@ -55,6 +61,7 @@ class Cliente_TCP(object):
             
 
     def __th_conectar(self):
+        print("th conecart")
         try:
             self.conexion = True
             self.__estado(1, "Estableciendo conexion")
@@ -132,10 +139,6 @@ class Cliente_TCP(object):
                     self.__estado(-1, "Error SOC: " + str(err))
                     self.desconectar()
             
-
-            
-
-
         
     def desconectar(self):
         try:
@@ -154,7 +157,7 @@ class Cliente_TCP(object):
 
     # loop de lectura de mensajes
     def __th_mensajes(self):
-        while self.conexion:
+        while True:
             if self.cola_mensaje.qsize() > 0:
                 codigo  = self.cola_codigo.get()
                 mensaje = self.cola_mensaje.get()
