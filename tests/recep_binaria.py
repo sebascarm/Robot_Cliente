@@ -13,7 +13,7 @@ tcp = Cliente_TCP()
 def fun_calback(Codigo, Mensaje):
     print("COD: ", Codigo, "Men: ", Mensaje)
 
-tcp.config("127.0.0.1", 50001, fun_calback, Binario=True)
+tcp.config("192.168.0.24", 50001, fun_calback, Binario=True)
 tcp.conectar()
 
 time.sleep(100)

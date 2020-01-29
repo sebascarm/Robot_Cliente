@@ -40,6 +40,7 @@ class Cliente_TCP(object):
         self.buffer         = 1024
         self.callback       = ''
         self.binario        = False
+        self.timeout        = 1     # 1 segundo
 
     def config(self, Host="127.0.0.1", Puerto=50001, Callback='', Buffer=1024, Binario=False):
         self.host       = Host
@@ -50,16 +51,16 @@ class Cliente_TCP(object):
         #Mensajes de callback: -1 Error 0 Desconectado 1 Conectando 2 Conectado
         #                       3 Envio de Datos 4 Recepcion de Datos
         #Calback funcion ej: calback(codigo, mensaje): / calback(self, codigo, mensaje): /
-        if Binario:
-            self.buffer = 4096
+        #if Binario:
+            # self.buffer = 4096
 
 
     def conectar(self):
         # control de mensajes si ya se encuentra en ejecucion
         if not self.th_mensajes.state:
-            self.th_mensajes.start(self.__th_mensajes,'','MENSAJES-TCP', 3, self.__callaback_th)
+            self.th_mensajes.start(self.__th_mensajes,'','MENSAJES-TCP', 1, self.__callaback_th)
         if not self.conexion:
-            self.th_conexion.start(self.__th_conectar,'','CONEXION-TCP', 10, self.__callaback_th)
+            self.th_conexion.start(self.__th_conectar,'','CONEXION-TCP', 20, self.__callaback_th)
         else:
             self.__estado(-1, "Conexion actualmente establecida")
             
@@ -69,7 +70,7 @@ class Cliente_TCP(object):
             self.conexion = True
             self.__estado(1, "Estableciendo conexion")
             self.soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.soc.settimeout(3)
+            self.soc.settimeout(self.timeout)
             conectar = self.soc.connect((self.host, self.puerto)) #si tiene que usarse
             self.__estado(2, "Conexion establecida")
             # ejecuta la recepcion segun binario o texto
@@ -96,7 +97,7 @@ class Cliente_TCP(object):
                 print("Sin Conexion: " + mensaje)
 
     def __recibir(self):
-        self.soc.settimeout(3) #time out de escucha // posiblementa innecesario
+        self.soc.settimeout(self.timeout) #time out de escucha // posiblementa innecesario
         while self.conexion:
             try:
                 recibido = self.soc.recv(self.buffer)    #leer del puerto - posible bloqueo hasta recepcion (con timeout no hay)
@@ -117,9 +118,9 @@ class Cliente_TCP(object):
     def __recibir_bin(self):        
         self.soc.settimeout(3) #time out de escucha // posiblementa innecesario
         recibido = b''  # tipo de dato binario
-        payload_size = struct.calcsize("L")
+        payload_size = struct.calcsize("Q")
+        #payload_size = 4 # en raspberry
         print ("PAYLOAD", payload_size)
-        
         while self.conexion:
             try:
                 # recibir el tama�o del mensaje
@@ -128,10 +129,12 @@ class Cliente_TCP(object):
                 # obtener el tama�o del mensaje
                 packed_msg_size = recibido[:payload_size]
                 recibido = recibido[payload_size:]
-                msg_size = struct.unpack("L", packed_msg_size)[0]
+                msg_size = struct.unpack("Q", packed_msg_size)[0]
                 # Recibir todos los datos segun el tama�o
+                #print("msg_size: ", msg_size)
                 while len(recibido) < msg_size:
                     recibido += self.soc.recv(self.buffer)  # leer del puerto - posible bloqueo hasta recepcion (con timeout no hay)
+                    #print("len (recibido): ", len(recibido))
                 frame_data = recibido[:msg_size]
                 recibido = recibido[msg_size:]
                 # extrar el frame
@@ -144,6 +147,7 @@ class Cliente_TCP(object):
             except Exception as err:
                 self.__estado(-1, "Error SOC: " + str(err))
                 self.desconectar()
+            
         
         
     def desconectar(self):
