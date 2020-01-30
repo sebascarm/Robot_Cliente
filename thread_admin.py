@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### CLASE THREAD ADMIN V2.0                             ###
+### CLASE THREAD ADMIN V2.1                             ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
 ### 29/01/2020                                          ###
+### Mejora en la espera de tiempo para finalizar proc   ### 
 ### Opcion de parametro de fin en procesos              ### 
 ### Mas velocidad en control de thread (0.1)            ###
 ### Call back (no es obligatorio)                       ###
@@ -27,7 +28,7 @@ from multiprocessing import Value # para enviar por parametro la falta de ejecuc
 #######################################################
 
 def keyboard_interrupt(signal, frame):
-    print(' SERVICE BREAK: Ctrl + C')
+    print('SERVICE BREAK: Ctrl + C')
     ThreadAdmin.close_all()
     print('FINISH THREADING CLOSE')
     print('EXIT PROGRAM')
@@ -153,8 +154,13 @@ class ThreadAdmin(object):
             self.ejecucion.value = False # enviamos apagado
             mensaje = ("THREAD ID: " + str(self.ident) + " " + str(self.name) + " END SENDED")
             self.funcion_call(5, mensaje)
-            # esperar a ver si muere
-            time.sleep(self.time_to_kill)
+            # esperamos a ver si muere
+            tiempo = 0
+            while tiempo < self.time_to_kill:
+                if self.state == False:
+                    break
+                time.sleep(0.1)
+                tiempo += 0.1
         else:
             if self.state:
                 # intento de cierre normal

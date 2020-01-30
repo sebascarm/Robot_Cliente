@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ############################################################
-### CLIENTE TCP VERSION 3.3                              ###
+### CLIENTE TCP VERSION 3.4                              ###
 ############################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                      ###
-### 28/01/2020                                           ###
+### 29/01/2020                                           ###
+### Uso de nuevo Thread con salida                       ###
 ### Reduccion de codigo y correciones                    ###
 ### Posibilidad de recibirdatos binarios                 ###
 ### Espera de 0.1 inecesaria, lectura bloqueante         ###
@@ -51,21 +52,21 @@ class Cliente_TCP(object):
         #Mensajes de callback: -1 Error 0 Desconectado 1 Conectando 2 Conectado
         #                       3 Envio de Datos 4 Recepcion de Datos
         #Calback funcion ej: calback(codigo, mensaje): / calback(self, codigo, mensaje): /
-        #if Binario:
-            # self.buffer = 4096
+        if Binario:
+            self.buffer = 4096
 
 
     def conectar(self):
         # control de mensajes si ya se encuentra en ejecucion
         if not self.th_mensajes.state:
-            self.th_mensajes.start(self.__th_mensajes,'','MENSAJES-TCP', 1, self.__callaback_th)
+            self.th_mensajes.start(self.__th_mensajes,'','MENSAJES-TCP', 3, self.__callaback_th, True)
         if not self.conexion:
-            self.th_conexion.start(self.__th_conectar,'','CONEXION-TCP', 20, self.__callaback_th)
+            self.th_conexion.start(self.__th_conectar,'','CONEXION-TCP', 3, self.__callaback_th, True)
         else:
             self.__estado(-1, "Conexion actualmente establecida")
             
 
-    def __th_conectar(self):
+    def __th_conectar(self, run):
         try:
             self.conexion = True
             self.__estado(1, "Estableciendo conexion")
@@ -74,10 +75,10 @@ class Cliente_TCP(object):
             conectar = self.soc.connect((self.host, self.puerto)) #si tiene que usarse
             self.__estado(2, "Conexion establecida")
             # ejecuta la recepcion segun binario o texto
-            if self.buffer:
-                self.__recibir_bin()    # recepcion binaria
+            if self.binario:
+                self.__recibir_bin(run)    # recepcion binaria
             else:
-                self.__recibir()        # recepcion texto
+                self.__recibir(run)         # recepcion texto
         except Exception:
             self.conexion = False
             self.__estado(-1, "Error en conexion")
@@ -96,9 +97,9 @@ class Cliente_TCP(object):
             except:
                 print("Sin Conexion: " + mensaje)
 
-    def __recibir(self):
+    def __recibir(self, run):
         self.soc.settimeout(self.timeout) #time out de escucha // posiblementa innecesario
-        while self.conexion:
+        while self.conexion and run.value:
             try:
                 recibido = self.soc.recv(self.buffer)    #leer del puerto - posible bloqueo hasta recepcion (con timeout no hay)
                 if recibido == b'':
@@ -115,13 +116,13 @@ class Cliente_TCP(object):
             # time.sleep(0.1)
 
     # recepcion binaria
-    def __recibir_bin(self):        
+    def __recibir_bin(self, run):        
         self.soc.settimeout(3) #time out de escucha // posiblementa innecesario
         recibido = b''  # tipo de dato binario
         payload_size = struct.calcsize("Q")
         #payload_size = 4 # en raspberry
         print ("PAYLOAD", payload_size)
-        while self.conexion:
+        while self.conexion and run.value:
             try:
                 # recibir el tama�o del mensaje
                 while len(recibido) < payload_size:
@@ -166,8 +167,8 @@ class Cliente_TCP(object):
         self.cola_mensaje.put(Mensaje)
 
     # loop de lectura de mensajes
-    def __th_mensajes(self):
-        while True:
+    def __th_mensajes(self, run):
+        while run.value:
             if self.cola_mensaje.qsize() > 0:
                 codigo  = self.cola_codigo.get()
                 mensaje = self.cola_mensaje.get()
