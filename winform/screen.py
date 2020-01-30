@@ -1,5 +1,13 @@
-""" modulo SCREEN
-"""
+# -*- coding: utf-8 -*-
+
+###########################################################
+### CLASE SCREEN  V1.1                                  ###
+###########################################################
+### ULTIMA MODIFICACION DOCUMENTADA                     ###
+### 29/01/2020                                          ###
+### Correccion al faltar icono                          ###
+###########################################################
+
 import time
 import pygame
 
@@ -40,7 +48,8 @@ class Screen:
         try:
             icono = pygame.image.load('icono.png')
             pygame.display.set_icon(icono)
-        finally:
+        except:
+            print("No se pudo cargar el icono")
             pass
         if self.resize:
             self.superficie = pygame.display.set_mode((

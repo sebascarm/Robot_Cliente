@@ -1,5 +1,6 @@
-Robot CLIENTE version 4.1
+Robot CLIENTE version 4.2
 =====================
+* Winform (objeto image)
 
 Versiones:
 * Python 3.6.9 (Linux PC)

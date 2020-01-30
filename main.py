@@ -1,6 +1,5 @@
 """ MODULO PRINCIPAL MAIN()
 """
-
 from winform.screen    import Screen
 from winform.form      import Form
 from formularios.ventana_principal import FormMain
