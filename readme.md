@@ -1,6 +1,13 @@
-Robot CLIENTE version 4.2
+Robot CLIENTE version 4.3
 =====================
+### Control de cambios
+
 * Winform (objeto image)
+
+
+-----------
+## Versiones
+-----------
 
 Versiones:
 * Python 3.6.9 (Linux PC)
