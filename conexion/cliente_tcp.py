@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ############################################################
-### CLIENTE TCP VERSION 3.4                              ###
+### CLIENTE TCP VERSION 3.5                              ###
 ############################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                      ###
-### 29/01/2020                                           ###
+### 01/02/2020                                           ###
+### Recepcion binaria finalizada                         ###
 ### Uso de nuevo Thread con salida                       ###
 ### Reduccion de codigo y correciones                    ###
 ### Posibilidad de recibirdatos binarios                 ###
@@ -21,7 +22,7 @@ import queue
 import time
 import pickle   # para utilizacion de binarios
 import struct   # para utilizacion de binarios
-import cv2
+# import cv2    # solo se requiere en modo test
 from thread_admin import ThreadAdmin
 
 
@@ -120,8 +121,6 @@ class Cliente_TCP(object):
         self.soc.settimeout(3) #time out de escucha // posiblementa innecesario
         recibido = b''  # tipo de dato binario
         payload_size = struct.calcsize("Q")
-        #payload_size = 4 # en raspberry
-        print ("PAYLOAD", payload_size)
         while self.conexion and run.value:
             try:
                 # recibir el tama�o del mensaje
@@ -132,7 +131,6 @@ class Cliente_TCP(object):
                 recibido = recibido[payload_size:]
                 msg_size = struct.unpack("Q", packed_msg_size)[0]
                 # Recibir todos los datos segun el tama�o
-                #print("msg_size: ", msg_size)
                 while len(recibido) < msg_size:
                     recibido += self.soc.recv(self.buffer)  # leer del puerto - posible bloqueo hasta recepcion (con timeout no hay)
                     #print("len (recibido): ", len(recibido))
@@ -140,9 +138,10 @@ class Cliente_TCP(object):
                 recibido = recibido[msg_size:]
                 # extrar el frame
                 frame=pickle.loads(frame_data)
-                #print (frame)
-                cv2.imshow('frame',frame)
-                cv2.waitKey(1)
+                # Recibido (datos binarios en frame)
+                # cv2.imshow('frame',frame)
+                # cv2.waitKey(1)
+                self.__estado(4, frame) # Recepcion de datos
             except socket.timeout as err:
                 pass    # time out continua con el loop
             except Exception as err:
