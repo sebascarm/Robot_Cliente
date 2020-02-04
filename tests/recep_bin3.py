@@ -46,7 +46,7 @@ def fun_imagen(Imagen):
 def fun_cuadro(x, y, ancho, alto):
     pass
 
-tcp.config("192.168.0.34", 50001, fun_calback, Binario=True)
+tcp.config("127.0.0.1", 50001, fun_calback, Binario=True)
 fdetec.config(Callback_Imagen=fun_imagen)
 fdetec.config_callback(Func_Cuadro=fun_cuadro)
 

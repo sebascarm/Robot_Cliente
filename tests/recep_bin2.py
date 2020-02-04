@@ -37,7 +37,8 @@ def fun_calback(Codigo, Mensaje):
     else:
         imagen.imagen_cv(Mensaje)
 
-tcp.config("192.168.0.26", 50001, fun_calback, Binario=True)
+#tcp.config("192.168.0.26", 50001, fun_calback, Binario=True)
+tcp.config("181.44.244.222", 50002, fun_calback, Binario=True)
 tcp.conectar()
 
 SCREEN.loop()
