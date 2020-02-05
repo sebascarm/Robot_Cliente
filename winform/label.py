@@ -6,7 +6,7 @@ class Label(Objeto_Gral):
         super().__init__(C_Form)                #instanciamos la clase padre
         
     def config(self, text, x, y, ancho, alto, alineacion="izquierda"):
-        """Configuración del objeto Requerido previo a toda acccion
+        """Configuracion del objeto Requerido previo a toda acccion
            alinacion = izquierda , derecha, centrada
         """
         super().config(x, y, ancho, alto, text, True, False)

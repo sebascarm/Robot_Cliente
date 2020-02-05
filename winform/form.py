@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+
+###########################################################
+### CLASE FORM   V1.1                                   ###
+###########################################################
+### ULTIMA MODIFICACION DOCUMENTADA                     ###
+### 05/02/2020                                          ###
+### Se carga en el objeto screen en configuracion       ###
+### (Para que se pueda dibujar directamente)            ###
+###########################################################
+
+
 import pygame
 
 class Form(object):
@@ -29,6 +41,8 @@ class Form(object):
         self.ancho_resolucion = int(ancho * self.coef_tamano)
         self.alto_resolucion  = int(alto  * self.coef_tamano)
         self.tamano_real      = self.ancho_resolucion, self.alto_resolucion
+        #cargamos el objeto al screen
+        #self.screen.formularios.append(self)
 
     def dibujar(self):
         #detalles del cuadro

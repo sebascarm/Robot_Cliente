@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### CLASE SCREEN  V1.1                                  ###
+### CLASE SCREEN  V1.2                                  ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 29/01/2020                                          ###
+### 05/02/2020                                          ###
+### Llama al metodo dibujar directamente                ###
 ### Correccion al faltar icono                          ###
 ###########################################################
 
@@ -39,6 +40,8 @@ class Screen:
         self.ancho_resolucion = int(ancho * self.coef_tamano)
         self.alto_resolucion  = int(alto * self.coef_tamano)
         pygame.key.set_repeat(300, 50)
+        # llamamos al metodo dibujar directamente
+        self.dibujar()
 
     def dibujar(self):
         """ Metodo de dibujo, debe ejecutarse previo
@@ -77,7 +80,19 @@ class Screen:
         #vaciamos la lista
         #del self.cuadros[:]
 
+    def dibuja_elementos(self):
+        # recorrer formularios
+        for formu in self.formularios:
+            print("recorrer formu")
+            formu.dibujar()
+            # recorrer objetos
+            for objeto in formu.objetos:
+                print("recorrer objetos")
+                objeto.dibujar()
+
     def loop(self):
+        #dibujar elementos 
+        self.dibuja_elementos()
         self.update()
         loope = True
         while loope:
