@@ -37,8 +37,8 @@ imagen  = Imagen(FORM1)
 label_t.config("Titulo", 5, 5, 140, 25, "centrada")
 imagen.config(50, 50, 100, 100)
 
-FORM1.dibujar()
-label_t.dibujar()
+
+#label_t.dibujar()
 #imagen.dibujar()
 
 #cola.maxsize = 100
@@ -73,5 +73,7 @@ tcp.config("192.168.0.34", 50001, fun_calback, Binario=True)
 #tcp.config("127.0.0.1", 50001, fun_calback, Binario=True)
 
 tcp.conectar()
+
+FORM1.dibujar()
 
 SCREEN.loop()

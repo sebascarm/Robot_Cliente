@@ -82,13 +82,14 @@ class Screen:
 
     def dibuja_elementos(self):
         # recorrer formularios
+        print ("entro en dibujar")
         for formu in self.formularios:
             print("recorrer formu")
             formu.dibujar()
             # recorrer objetos
-            for objeto in formu.objetos:
-                print("recorrer objetos")
-                objeto.dibujar()
+            #for objeto in formu.objetos:
+            #    print("recorrer objetos")
+            #    objeto.dibujar()
 
     def loop(self):
         #dibujar elementos 
