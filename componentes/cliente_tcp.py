@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ############################################################
-### CLIENTE TCP VERSION 3.5                              ###
+### CLIENTE TCP VERSION 3.7                              ###
 ############################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                      ###
 ### 01/02/2020                                           ###
+### Mejora en la ayuda de configuracion                  ###
 ### Recepcion binaria finalizada                         ###
 ### Uso de nuevo Thread con salida                       ###
 ### Reduccion de codigo y correciones                    ###
@@ -23,7 +24,7 @@ import time
 import pickle   # para utilizacion de binarios
 import struct   # para utilizacion de binarios
 # import cv2    # solo se requiere en modo test
-from thread_admin import ThreadAdmin
+from componentes.thread_admin import ThreadAdmin
 
 
 class Cliente_TCP(object):
@@ -45,14 +46,16 @@ class Cliente_TCP(object):
         self.timeout        = 1     # 1 segundo
 
     def config(self, Host="127.0.0.1", Puerto=50001, Callback='', Buffer=1024, Binario=False):
+        ''' Funcion callback devuelve (Codigo, Mensaje)
+            Codigos: -1: Error 0: Desconectado 1: Conectando 2: Conectado
+            3: Envio de Datos 4: Recepcion de Datos
+            Calback funcion ej: calback(codigo, mensaje): / calback(self, codigo, mensaje):
+        '''
         self.host       = Host
         self.puerto     = int(Puerto)
         self.buffer     = Buffer
         self.binario    = Binario       # Solo puede recibir binario (cambia el buufer automatico), envia texto
         self.callback   = Callback      # Funcion de rellamada de estados
-        #Mensajes de callback: -1 Error 0 Desconectado 1 Conectando 2 Conectado
-        #                       3 Envio de Datos 4 Recepcion de Datos
-        #Calback funcion ej: calback(codigo, mensaje): / calback(self, codigo, mensaje): /
         if Binario:
             self.buffer = 4096
 

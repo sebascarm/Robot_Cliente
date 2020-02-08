@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\ia",
-    "\\tests"
+    "\\componentes",
+    "\\compuesto",
+    "\\forms",
+    "\\ia"
   ],
-  "SelectedNode": "\\tests\\recep_bin3.py",
+  "SelectedNode": "\\ia\\face_detect2.py",
   "PreviewInSolutionExplorer": false
 }

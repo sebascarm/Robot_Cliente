@@ -56,6 +56,7 @@ class Face_Detect2(object):
         
                 
     def config(self, Resolucion=(320,240), Frames=10, Callback_Imagen=''):
+        ''' Callback imagen devuelve la imagen en formato cv'''
         self.callback_imagen = Callback_Imagen
         self.resolucion      = Resolucion
         self.frames          = Frames
