@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### CLASE SCREEN  V1.2                                  ###
+### CLASE SCREEN  V1.3                                  ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 05/02/2020                                          ###
+### 07/02/2020                                          ###
+### Dibuja objetos directamente                         ###
 ### Llama al metodo dibujar directamente                ###
 ### Correccion al faltar icono                          ###
 ###########################################################
@@ -82,14 +83,12 @@ class Screen:
 
     def dibuja_elementos(self):
         # recorrer formularios
-        print ("entro en dibujar")
         for formu in self.formularios:
             print("recorrer formu")
             formu.dibujar()
             # recorrer objetos
-            #for objeto in formu.objetos:
-            #    print("recorrer objetos")
-            #    objeto.dibujar()
+            for objeto in formu.objetos:
+                objeto.dibujar()
 
     def loop(self):
         #dibujar elementos 

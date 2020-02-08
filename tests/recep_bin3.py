@@ -28,20 +28,13 @@ tiempo   = Timer()
 th_detec = ThreadAdmin()
 
 # Crear pantalla, objeto unico y principal
-#SCREEN = Screen("Test recibir imagen 2", RESOLUCION, 1,1.0)  # enviamos el tamano al inicio
 SCREEN = Screen("Test recibir imagen 2", RESOLUCION)  # enviamos el tamano al inicio
 FORM1 = Form(SCREEN, "control", RESOLUCION, POS_VENTANA, COLOR_FORM)
-
 label_t = Label(FORM1)
 imagen  = Imagen(FORM1)
 label_t.config("Titulo", 5, 5, 140, 25, "centrada")
 imagen.config(50, 50, 100, 100)
 
-
-#label_t.dibujar()
-#imagen.dibujar()
-
-#cola.maxsize = 100
 
 def fun_calback(Codigo, Mensaje):
     if  Codigo != 4:
@@ -73,7 +66,5 @@ tcp.config("192.168.0.34", 50001, fun_calback, Binario=True)
 #tcp.config("127.0.0.1", 50001, fun_calback, Binario=True)
 
 tcp.conectar()
-
-FORM1.dibujar()
 
 SCREEN.loop()

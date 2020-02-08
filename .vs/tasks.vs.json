@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "tarea-recep_bin3",
+      "appliesTo": "tests/recep_bin3.py",
+      "type": "launch"
+    }
+  ]
+}
