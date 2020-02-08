@@ -1,7 +1,7 @@
-Robot CLIENTE version 4.7.1
+Robot CLIENTE version 4.7.2
 =====================
 ### Control de cambios
-
+* Correcion objeto label v1.1
 * Winform (objeto image)
 
 

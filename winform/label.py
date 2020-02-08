@@ -1,4 +1,15 @@
+# -*- coding: utf-8 -*-
 
+###########################################################
+### CLASE LABEL V1.1                                    ###
+###########################################################
+### ULTIMA MODIFICACION DOCUMENTADA                     ###
+### 08/02/2020                                          ###
+### Redibujado del rectangulo para borrar fondo al      ###
+### cambiar el texto                                    ###
+###########################################################
+
+import pygame
 from winform.base.objeto_gral import Objeto_Gral #Clase Padre
 
 class Label(Objeto_Gral):
@@ -19,6 +30,7 @@ class Label(Objeto_Gral):
         self.label_int.set_background(color)
     
     def dibujar(self):
+        pygame.draw.rect(self.superficie, self.color_base, self.rectangulo, 0)  # borramos el fondo para que se borre el texto previo
         self.label_int.dibujar()   
         #agregamos el cuadro al total
         self.cuadros_total.append(self.rectangulo)
