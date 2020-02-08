@@ -1,11 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\componentes",
     "\\compuesto",
     "\\forms",
-    "\\ia"
+    "\\ia",
+    "\\winform"
   ],
-  "SelectedNode": "\\ia\\face_detect2.py",
+  "SelectedNode": "\\forms\\form_principal.py",
   "PreviewInSolutionExplorer": false
 }

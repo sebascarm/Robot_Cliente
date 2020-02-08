@@ -20,6 +20,7 @@ POS_VENTANA = 0, 0
 SCREEN    = Screen("Robot v1.0.0", RESOLUCION)  # enviamos el tamano al inicio
 FORM      = Form(SCREEN, "control", RESOLUCION, POS_VENTANA, COLOR_FORM)
 OBJETOS   = Form_Principal(FORM)
- 
-EVENTOS = Eventos(OBJETOS)
+EVENTOS   = Eventos(OBJETOS)
+OBJETOS.Establecer_Eventos(EVENTOS)
+
 SCREEN.loop()

@@ -11,7 +11,9 @@
 
 from componentes.cliente_tcp  import Cliente_TCP
 from componentes.thread_admin import ThreadAdmin
+from componentes.timer        import Timer
 from ia.face_detect2          import Face_Detect2
+
 import time
 import queue # cola o pila
 
@@ -22,24 +24,38 @@ class Face_Comp(object):
         self.th_detect   = ThreadAdmin()
         self.host        = ''
         self.ob_imagen   = ''
+        self.ob_label_fps = ''
         self.cola_imagen = queue.LifoQueue()
+        self.conectado   = False # Estado de la conexion
+        self.tiempo      = Timer()
 
-    def config(self, Host, Ob_Imagen):
+    def config(self, Host, Ob_Imagen, Ob_label_fps):
         ''' Se requiere IP del Servidor y Objeto Imagen'''
         self.host =Host
         self.ob_imagen = Ob_Imagen
+        self.ob_label_fps = Ob_label_fps
         self.tcp.config(Host, 50001, self.__call_conexion, Binario=True)
         self.fdetect.config(Callback_Imagen=self.__call_imagen)
-        fdetec.config_callback(Func_Cuadro=self.__call_cuadro)
+        self.fdetect.config_callback(Func_Cuadro=self.__call_cuadro)
             
     def iniciar(self):
+        print("iniciar")
+        self.tiempo.iniciar()
         self.tcp.conectar()
+
+    def stop(self):
+        self.tcp.desconectar()
+        self.th_detect.close()
         
     def __call_conexion(self, Codigo, Mensaje):
         ''' recepcion de datos binarios tpc'''
         # Conectado
         if Codigo == 2:
+            self.conectado = True
             self.th_detect.start(self.__th_detector, '', 'DETECTOR', enviar_ejecucion=True)
+        # Desconecado
+        if Codigo == 0:
+            self.conectado = False
         # Recepcion de datos
         if Codigo == 4:
             self.cola_imagen.put(Mensaje) # encolamos la imgen recibida
@@ -56,6 +72,7 @@ class Face_Comp(object):
         while run.value:
             if self.cola_imagen.qsize() > 0:
                #print(tiempo.fps())
+               self.ob_label_fps.set_text(str(self.tiempo.fps()))
                imag = self.cola_imagen.get()
                self.fdetect.imagen(imag)
             time.sleep(0.01)
