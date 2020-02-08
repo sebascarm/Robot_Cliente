@@ -42,7 +42,7 @@ class Form(object):
         self.alto_resolucion  = int(alto  * self.coef_tamano)
         self.tamano_real      = self.ancho_resolucion, self.alto_resolucion
         #cargamos el objeto al screen
-        #self.screen.formularios.append(self)
+        self.screen.formularios.append(self)
 
     def dibujar(self):
         #detalles del cuadro
@@ -59,4 +59,4 @@ class Form(object):
         self.cuadro = cuadro
         self.screen.cuadros.append(self.cuadro)
         #cargamos el objeto al screen
-        self.screen.formularios.append(self)
+        #self.screen.formularios.append(self)

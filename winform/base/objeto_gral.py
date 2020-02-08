@@ -73,13 +73,14 @@ class Objeto_Gral():
         self.line_rect = 0,0, self.ancho, self.line_alto
         #agregamos el cuadro al total (revisar ya que tiene q dibujar cuando hay cambios)
         self.cuadros_total.append(self.rectangulo)
+        #agregamos el objeto al formulario (revisar en caso q no tenga foco)
+        self.form.objetos.append(self)
         #agregar indices solo si posee foco
         if foco:
             self.__agregar_indices()
 
     def __agregar_indices(self):
-        #agregamos el objeto al formulario
-        self.form.objetos.append(self)
+        
         #agregamos el ID
         elementos = len(self.form.objetos)
         self.id   = elementos - 1
