@@ -1,7 +1,7 @@
 *__pycache__*
 *.pyc
 
-
+.vs/
 .vscode/
 entorno/
 ent-virtual/
@@ -11,4 +11,6 @@ ent-virtual-lap/
 
 ejemplos/
 old/
+
+# mmm
 
