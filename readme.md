@@ -1,6 +1,7 @@
-Robot CLIENTE version 4.7.3
+Robot CLIENTE version 4.8.0
 =====================
 ### Control de cambios
+* Nuevo objeto comunicacion
 * Mejoras en readme
 * Correcion objeto label v1.1
 * Winform (objeto image)
