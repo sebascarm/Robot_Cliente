@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### FACE COMPUESTO V1.1                                 ###
+### FACE COMPUESTO V1.2                                 ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 08/02/2020                                          ###
+### 10/02/2020                                          ###
+### Envio de angulo a retornar                          ###
 ### Cracion nuevamente                                  ###
 ###########################################################
 
@@ -36,7 +37,7 @@ class Face_Comp(object):
         self.ob_label_fps = Ob_label_fps
         self.tcp.config(Host, 50001, self.__call_conexion, Binario=True)
         self.fdetect.config(Callback_Imagen=self.__call_imagen)
-        self.fdetect.config_callback(Func_Cuadro=self.__call_cuadro)
+        self.fdetect.config_callback(Func_Unica=self.__call_posdetect)
             
     def iniciar(self):
         print("iniciar")
@@ -64,8 +65,8 @@ class Face_Comp(object):
         ''' recepcion de imagen procesada por el detector para insertar en el objeto imagen'''
         self.ob_imagen.imagen_cv(cv_imagen)
 
-    def __call_cuadro(self,X , Y, Ancho, Alto):
-        pass
+    def __call_posdetect(self,X , Y):
+        print(X, Y)
 
     def __th_detector(self, run):
         ''' envia a analizar las imagenes que entran en cola '''

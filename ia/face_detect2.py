@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### Clase FACE DETECT2 V3.0                             ###
+### Clase FACE DETECT2 V3.1                             ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 03/02/2020                                          ###
+### 10/02/2020                                          ###
+### Mejora en la docstring del config                   ###
 ### Para utilizacion mediante recepcion y envio de imag ###
 ### Utilizacion de clase propia webcam                  ###
 ### Funcion unica devuelve angulo unico                 ###
@@ -66,11 +67,12 @@ class Face_Detect2(object):
         self.net = self.cv.dnn.readNetFromCaffe(proto, model)
         
     def config_callback(self, Func_Detect='', Func_Cuadro='', Func_Vista='', Func_Cent_Vista='', Func_Unica=''):
-        # Func_Detect = Funcion()
-        # Func_Cuadro = Funcion(X,Y,Ancho,Alto)
-        # Func_Vista  = Funcion(X,Y)
-        # Func_Cent_Vista = Funcion(X,Y)
-        # Func_Unica      = Funcion(X,Y)
+        '''Func_Detect = Funcion() - Llama a la funcion si detecto un rostro 
+           Func_Cuadro = Funcion(X,Y,Ancho,Alto) - Retorna coordenadas de cuadro rostro
+           Func_Vista  = Funcion(X,Y) - Retorna punto de vista de rostro
+           Func_Cent_Vista = Funcion(X,Y) - Retorna valores para centrar la vista
+           Func_Unica      = Funcion(X,Y) - funcion q retorna valor unico de angulo de centrado de vista (tomando rangos de min y max) devuelve angulo a corregir
+        '''
         self.func_detect = Func_Detect
         self.func_cuadro = Func_Cuadro    
         self.func_vista  = Func_Vista

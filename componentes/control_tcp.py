@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### CONTROL TCP VERSION 1.2                             ###
+### CONTROL TCP VERSION 2.0                             ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
 ### 04/09/2019                                          ###
@@ -9,7 +9,14 @@
 ### Encargado de controlar los paquetes TCP             ###
 ###########################################################
 
-from conexion.cliente_tcp import Cliente_TCP
+# LONG FIJA  | LONG VARIABLE
+# 012 456 890 2.......             
+# [iD|LON|CHK|MODULO|COMANDO|VALOR] 
+# Para comprobar se utiliza el CHK = 000
+
+from componentes.cliente_tcp import Cliente_TCP
+from componentes.funciones import GetChkSum
+from componentes.funciones import Val_to_text
 
 class Control_TCP(Cliente_TCP):
     def __init__(self):
@@ -25,14 +32,16 @@ class Control_TCP(Cliente_TCP):
         self.buscar_fin = False
             
     def config(self, Host, Puerto, Callback, Buffer = 1024):
-        #redefinimos el callback y lo capturamos
+        ''' Callaback(Codigo, Mensaje)
+            La funcion callback retorna un codigo y el mensaje de detalle o recepcion'''
         self.funcion = Callback
         super().config(Host, Puerto, self.__callback_int, Buffer)
 
-    def config_packet(self, inicio, fin, max_size):
-        #inicio   = caracter que define el inicio del paquete
-        #fin      = caracter que define el final del paquete
-        #max_size = tamaÃ±o maximo para buscar el fin del paquete
+    def config_packet(self, inicio="[", fin="]", max_size=100):
+        '''inicio   = caracter que define el inicio del paquete
+           fin      = caracter que define el final del paquete
+           max_size = tama�o maximo para buscar el fin del paquete
+        '''
         self.inicio   = inicio
         self.fin      = fin
         self.max_size = max_size

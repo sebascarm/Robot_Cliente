@@ -1,6 +1,7 @@
-Robot CLIENTE version 4.7.2
+Robot CLIENTE version 4.7.3
 =====================
 ### Control de cambios
+* Mejoras en readme
 * Correcion objeto label v1.1
 * Winform (objeto image)
 
@@ -8,6 +9,26 @@ Robot CLIENTE version 4.7.2
 -----------
 ## Versiones
 -----------
+Versiones LAPTOP
+
+* Entorno virtual (ent-virtual-lap)
+* Python v3.7.4
+
+```
+Package               Version
+--------------------- ----------
+numpy                 1.18.1
+opencv-contrib-python 4.1.2.30
+pip                   20.0.2
+pygame                1.9.6
+gTTS                  2.1.0
+gTTS-token            1.1.3
+imutils               0.5.3
+otros... (limpiar)
+```
+
+
+
 Versiones:
 * Python 3.6.9 (Linux PC)
 * Requerido:
