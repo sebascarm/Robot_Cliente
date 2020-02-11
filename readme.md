@@ -1,6 +1,7 @@
-Robot CLIENTE version 4.8.0
+Robot CLIENTE version 4.8.1
 =====================
 ### Control de cambios
+* Correccion en comunicacion
 * Nuevo objeto comunicacion
 * Mejoras en readme
 * Correcion objeto label v1.1
