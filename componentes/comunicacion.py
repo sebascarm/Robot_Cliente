@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### COMUNICACION TCP VERSION 3.0                        ###
+### COMUNICACION TCP VERSION 3.1                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
 ### 10/02/2020                                          ###
@@ -24,7 +24,9 @@ from componentes.servidor_tcp import Servidor_TCP
 from componentes.funciones import GetChkSum
 from componentes.funciones import Val_to_text
 
-class Comunicacion():
+#nuevo
+
+class Comunicacion:
     def __init__(self): 
         self.cliente     = True  # valor de cliente o servidor
         self.binario     = False # Tipo de datos a utilizar
@@ -64,24 +66,24 @@ class Comunicacion():
             self.serv_tcp.config(Ip, Puerto, 1024, self.__call_conex, Binario)
         
     def config_packet(self, inicio="<", fin=">", max_size=100):
-        '''inicio   = caracter que define el inicio del paquete
+        """inicio   = caracter que define el inicio del paquete
            fin      = caracter que define el final del paquete
-           max_size = tamaño maximo para buscar el fin del paquete'''
+           max_size = tamaño maximo para buscar el fin del paquete"""
         self.inicio   = inicio
         self.fin      = fin
         self.max_size = max_size
  
     def iniciar(self):
-        '''En caso de ser servidor inicia la escucha, y en caso de ser cliente intenta establecer la conexion'''
+        """En caso de ser servidor inicia la escucha, y en caso de ser cliente intenta establecer la conexion"""
         if self.cliente:
             self.cli_tcp.conectar()
         else:
             self.serv_tcp.iniciar()
 
     def enviar(self, Mensaje):
-        ''' envia el mensaje establecido agregando:
-            <ID|LON|CHK|-------MENSAJE--------> 
-        '''
+        """ envia el mensaje establecido agregando:
+            <ID|LON|CHK|-------MENSAJE-------->
+        """
         self.id_send = self.get_id(self.id_send)
         id_send      = Val_to_text(self.id_send,2)
         long         = len(Mensaje) + 13 
@@ -232,7 +234,7 @@ class Comunicacion():
                     else:
                         # enviar el paquete y rellamarse a si mismo
                         self.paquete = self.paquete[pos_fin+1:]
-                        self__procesar_recepcion('') # se envia vacio, los datos ya estan en self.paquete
+                        self.__procesar_recepcion('') # se envia vacio, los datos ya estan en self.paquete
                     # Envio del paquete
                     return paq_completo # se retorna el paquete correcto
 
