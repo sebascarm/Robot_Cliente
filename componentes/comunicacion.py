@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### COMUNICACION TCP VERSION 3.4                        ###
+### COMUNICACION TCP VERSION 3.5                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
 ### 11/02/2020                                          ###
+### Se corrige para el envio binario                    ###
+### Se agrega el estado de la conexion                  ###
 ### correcciones varias                                 ###
 ### Se envia y recibe paquetes de control               ###
 ### Objeto aplicable a cliente y servidor               ###
@@ -13,8 +15,8 @@
 ###########################################################
 
 # LONG FIJA  | LONG VARIABLE
-# 012 456 890 2.......             
-# <ID|LON|CHK|MODULO|COMANDO|VALOR> 
+# 012 456 890 2.......
+# <ID|LON|CHK|MODULO|COMANDO|VALOR>
 # Para comprobar se utiliza el CHK = 000
 # PAra datos binarios no aplica formato por el momento
 # Paquete inicial id = 00
@@ -28,6 +30,8 @@ from componentes.funciones import Val_to_text
 
 class Comunicacion:
     def __init__(self):
+        """ Verificamos el estado de la conexion a travez de self.conexion"""
+        self.conexion = False  # estado de la conexion
         self.cliente = True  # valor de cliente o servidor
         self.binario = False  # Tipo de datos a utilizar
         self.serv_tcp = ''  # Servidor TCP
@@ -85,19 +89,26 @@ class Comunicacion:
         """ envia el mensaje establecido agregando:
             <ID|LON|CHK|-------MENSAJE-------->
         """
-        self.id_send = get_id(self.id_send)
-        id_send = Val_to_text(self.id_send, 2)
-        long = len(mensaje) + 13
-        chk = "000"  # valor de checksum para obtener el checksum
-        texto_chk = self.inicio + id_send + "|" + str(long) + "|" + chk + "|" + mensaje + self.fin
-        chk_hash = Val_to_text(GetChkSum(texto_chk), 3)
-        texto = self.inicio + id_send + "|" + str(long) + "|" + chk_hash + "|" + mensaje + self.fin
-        if self.cliente:
-            self.cli_tcp.enviar(texto)
+        if (not self.cliente) and self.binario: # Si es Servidor Binario no envia de este modo
+            self.serv_tcp.enviar(mensaje)
         else:
-            self.serv_tcp.enviar(texto)
+            self.id_send = get_id(self.id_send)
+            id_send = Val_to_text(self.id_send, 2)
+            long = len(mensaje) + 13
+            chk = "000"  # valor de checksum para obtener el checksum
+            texto_chk = self.inicio + id_send + "|" + str(long) + "|" + chk + "|" + mensaje + self.fin
+            chk_hash = Val_to_text(GetChkSum(texto_chk), 3)
+            texto = self.inicio + id_send + "|" + str(long) + "|" + chk_hash + "|" + mensaje + self.fin
+            if self.cliente:
+                self.cli_tcp.enviar(texto)
+            else:
+                self.serv_tcp.enviar(texto)
 
     def __call_conex(self, codigo, mensaje):
+        if codigo == 0:
+            self.conexion = False
+        if codigo == 2:
+            self.conexion = True
         if codigo == 4:
             # solo si es servidor o si es cliente no binario
             # el servidor no recibe datos binarios
@@ -121,6 +132,7 @@ class Comunicacion:
         else:
             # codigo distinto a 4
             self.call_conex(codigo, mensaje)
+
     ###########################################################
     ### OBTENER PAQUETE                                     ###
     ###########################################################
@@ -136,12 +148,13 @@ class Comunicacion:
     def control_checksum(self, mensaje):
         chk_reecp = mensaje[6:9]
         # control de checksum
-        #print(self.inicio + mensaje[0:5] + "|000|" + mensaje[10:] + self.fin)
+        # print(self.inicio + mensaje[0:5] + "|000|" + mensaje[10:] + self.fin)
         checksum = GetChkSum(self.inicio + mensaje[0:5] + "|000|" + mensaje[10:] + self.fin)
-        if chk_reecp != Val_to_text(checksum,3):
+        if chk_reecp != Val_to_text(checksum, 3):
             return False
         else:
             return True
+
     ###########################################################
     ### CONTROL DE SECUENCIA                                ###
     ###########################################################
@@ -159,7 +172,8 @@ class Comunicacion:
                 return True
             else:
                 # recepcion secuencia incorrecta
-                self.call_conex(-2, "Secuencia incorrecta - recibido: " + id_recep + " esperado: " + Val_to_text(id_esperado, 2) + " Mensaje: " + mensaje)
+                self.call_conex(-2, "Secuencia incorrecta - recibido: " + id_recep + " esperado: " + Val_to_text(
+                    id_esperado, 2) + " Mensaje: " + mensaje)
                 self.id_recep = int(id_recep)
                 return False
 
@@ -176,7 +190,7 @@ class Comunicacion:
         if self.paquete == '':
             return ''
         else:
-            #print("PAQ: " + self.paquete)
+            # print("PAQ: " + self.paquete)
             if self.buscar_ini:
                 # Revisamos el inicio del paquete
                 if self.paquete[:1] != self.inicio:
