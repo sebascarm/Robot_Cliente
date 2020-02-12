@@ -3,6 +3,8 @@
 
 .vs/
 .vscode/
+.idea/
+
 entorno/
 ent-virtual/
 ent-virtual-win/
