@@ -101,4 +101,3 @@ class Screen:
             if loope:
                 self.update()
             time.sleep(0.01)
-            
