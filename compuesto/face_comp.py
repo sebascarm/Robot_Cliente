@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### FACE COMPUESTO V1.3                                 ###
+### FACE COMPUESTO V1.4                                 ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 11/02/2020                                          ###
+### 12/02/2020                                          ###
+### Mejora en envio de los FPS                          ###
 ### utilizacion de comunicacion                         ###
 ### Envio de angulo a retornar                          ###
 ### Cracion nuevamente                                  ###
@@ -43,7 +44,6 @@ class Face_Comp(object):
         self.fdetect.config_callback(Func_Unica=self.__call_posdetect)
 
     def iniciar(self):
-        print("iniciar????")
         self.tiempo.iniciar()
         self.tcp.iniciar()
 
@@ -73,7 +73,7 @@ class Face_Comp(object):
         while run.value:
             if self.cola_imagen.qsize() > 0:
                 # print(tiempo.fps())
-                self.ob_label_fps.set_text(str(self.tiempo.fps()))
+                self.ob_label_fps.set_text("FPS: " + str(round(self.tiempo.fps(), 2)))
                 imag = self.cola_imagen.get()
                 self.fdetect.imagen(imag)
             time.sleep(0.01)
