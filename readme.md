@@ -1,4 +1,4 @@
-Robot CLIENTE version 4.8.1
+Robot CLIENTE version 4.8.2
 =====================
 ### Control de cambios
 * Correccion en comunicacion

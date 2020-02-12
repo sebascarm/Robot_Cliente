@@ -20,8 +20,8 @@
 # Paquete inicial id = 00
 # MODULO|COMANDO|VALOR = no se entrega en esta etapa, se devuelve tode el paquete
 
-from componentes.cliente_tcp import Cliente_TCP
-from componentes.servidor_tcp import Servidor_TCP
+from componentes.comunic.cliente_tcp import Cliente_TCP
+from componentes.comunic.servidor_tcp import Servidor_TCP
 from componentes.funciones import GetChkSum
 from componentes.funciones import Val_to_text
 

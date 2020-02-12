@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ############################################################
-### MODULO PRINCIPAL 4.7                                 ###
+### MODULO PRINCIPAL 4.8.2                               ###
 ############################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                      ###
 ### 08/02/2020                                           ###
@@ -21,6 +21,6 @@ SCREEN    = Screen("Robot v1.0.0", RESOLUCION)  # enviamos el tamano al inicio
 FORM      = Form(SCREEN, "control", RESOLUCION, POS_VENTANA, COLOR_FORM)
 OBJETOS   = Form_Principal(FORM)
 EVENTOS   = Eventos(OBJETOS)
-OBJETOS.Establecer_Eventos(EVENTOS)
+OBJETOS.establecer_eventos(EVENTOS)
 
 SCREEN.loop()
