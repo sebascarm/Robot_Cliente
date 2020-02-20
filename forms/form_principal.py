@@ -56,7 +56,7 @@ class Form_Principal(object):
         self.box_imagen.config(200,100,320,240)
 
         ## Objetos sin graficos
-        self.face_comp.config("127.0.0.1", self.box_imagen, self.label_fps)
+        self.face_comp.config("192.168.0.24", self.box_imagen, self.label_fps)
 
     def establecer_eventos(self, c_eventos):
         self.eventos = c_eventos

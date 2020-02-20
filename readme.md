@@ -1,12 +1,17 @@
-Robot CLIENTE version 4.8.3
+Robot CLIENTE version 4.8.4
 =====================
 ### Control de cambios
-* (Correr sobre version de 64 bits)
-* Correccion en comunicacion
-* Nuevo objeto comunicacion
-* Mejoras en readme
-* Correcion objeto label v1.1
-* Winform (objeto image)
+* 20/02/2020
+    * clase thread_admin v2.3 (diccionario)
+    * clase Servidor_TCP v3.7 (log de th en callback)
+    * clase comunicacion v3.7 (log)
+* Previo
+    * (Correr sobre version de 64 bits)
+    * Correccion en comunicacion
+    * Nuevo objeto comunicacion
+    * Mejoras en readme
+    * Correcion objeto label v1.1
+    * Winform (objeto image)
 
 
 -----------
