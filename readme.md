@@ -1,6 +1,14 @@
 Robot CLIENTE version 4.8.4
 =====================
 ### Control de cambios
+* 21/02/2020
+    * clase Thread_Admin v2.4 (re ejecucion)
+    * clase servidor_TCP v3.8 (desconexion)
+    * clase logg         v1.2 (incorporada)
+    * clase face_comp    v1.6 (evento de conexion, desconexion)
+    * clase comunicacion v3.9 (desconexion, log)
+    * clase eventos           (definicion inside) 
+    * clase form_princip v2.1 (eventos aparte)
 * 20/02/2020
     * clase thread_admin v2.3 (diccionario)
     * clase Servidor_TCP v3.7 (log de th en callback)

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### FACE COMPUESTO V1.4                                 ###
+### FACE COMPUESTO V1.6                                 ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 12/02/2020                                          ###
+### 21/02/2020                                          ###
+### Evento estado de conexion                           ###
+### Revision de reconexion                              ###
+### Desconexion                                         ###
 ### Mejora en envio de los FPS                          ###
 ### utilizacion de comunicacion                         ###
 ### Envio de angulo a retornar                          ###
@@ -29,8 +32,9 @@ class Face_Comp(object):
         self.ob_imagen = ''
         self.ob_label_fps = ''
         self.cola_imagen = queue.LifoQueue()
-        self.conectado = False  # Estado de la conexion
+        self.conectado = False      # Estado de la conexion
         self.tiempo = Timer()
+        self.evento_conexion = ''   # Evento que devuelve el estado de la conexion
 
     def config(self, host, ob_imagen, ob_label_fps):
         """ Se requiere IP del Servidor y Objeto Imagen
@@ -43,11 +47,17 @@ class Face_Comp(object):
         self.fdetect.config(Callback_Imagen=self.__call_imagen)
         self.fdetect.config_callback(Func_Unica=self.__call_posdetect)
 
+    def config_eventos(self, evento_conexion=''):
+        """evento_conexion: Funcion que devuelve True o False cuando conecta o desconecta
+           Ej: def evento(Estado)
+        """
+        self.evento_conexion = evento_conexion
+
     def iniciar(self):
         self.tiempo.iniciar()
         self.tcp.iniciar()
 
-    def stop(self):
+    def desconectar(self):
         self.tcp.desconectar()
         self.th_detect.close()
 
@@ -57,12 +67,22 @@ class Face_Comp(object):
         if codigo == 2:
             self.conectado = True
             self.th_detect.start(self.__th_detector, '', 'DETECTOR', enviar_ejecucion=True)
+            self.evento_conexion(True) # Devolvemos conectado
         # Desconecado
-        if codigo == 0:
+        elif codigo == 0:
             self.conectado = False
+            self.evento_conexion(False)    # Devolvemos desconectado
         # Recepcion de datos
-        if codigo == 4:
+        elif codigo == 4:
             self.cola_imagen.put(mensaje)  # encolamos la imgen recibida
+        # Errores
+        elif codigo == -1:
+            self.conectado = False
+            self.evento_conexion(False)  # Devolvemos desconectado
+        # Otros mensajes
+        else:
+            if codigo != 3: # 3 es envio de mensajes
+                print("MEN: " + str(codigo) + " " + str(mensaje))
 
     def __call_imagen(self, cv_imagen):
         """ recepcion de imagen procesada por el detector para insertar en el objeto imagen"""
@@ -79,7 +99,7 @@ class Face_Comp(object):
             time.sleep(0.01)
 
     def __call_posdetect(self, x, y):
-        print(x, y)
+        # print(x, y)
         modulo  = "FACE"
         comando = "CENTRAR"
         valor   = str(x) + "|" + str(y)

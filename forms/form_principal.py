@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### VENTANA PRINCIPAL 2.0                               ###
+### VENTANA PRINCIPAL 2.1                               ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 08/02/2020                                          ###
+### 21/02/2020                                          ###
+### Eventos de fase conection                           ###
 ### Cracion                                             ###
 ###########################################################
 
@@ -41,8 +42,6 @@ class Form_Principal(object):
         self.label_fps    = Label(C_Form)
         # objetos sin graficos
         self.face_comp    = Face_Comp()
-        #
-        self.eventos      = ''  # se establece luego
 
         # Configuracion
         self.labl_titulo.config("Configuración", 10, 10, 140, 25, "centrada")
@@ -57,10 +56,3 @@ class Form_Principal(object):
 
         ## Objetos sin graficos
         self.face_comp.config("192.168.0.24", self.box_imagen, self.label_fps)
-
-    def establecer_eventos(self, c_eventos):
-        self.eventos = c_eventos
-        # Configuracion de eventos
-        self.bot_conectar.accion(self.eventos.conectar)
-        #self.bot_conectar.accion(self.conectar)
-

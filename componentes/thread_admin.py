@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### CLASE THREAD ADMIN V2.3                             ###
+### CLASE THREAD ADMIN V2.4                             ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 20/02/2020                                          ###
+### 21/02/2020                                          ###
+### Correncion en envio de ejecucion (re arranque)      ###
 ### Diccionario                                         ###
 ### Detalle de como finializar el programa principal    ###
 ### Mejora en la espera de tiempo para finalizar proc   ###
@@ -96,7 +97,7 @@ class ThreadAdmin(object):
         self.ident = 0
         self.funcion_call = ''
         self.enviar_ejecucion = enviar_ejecucion  # opcion de envio como paramtro salida
-        self.ejecucion = Value('b', True)
+        self.ejecucion = Value('b', True)         # valor de ejecucion
         # arranca el star si se paso el proceso como parametro, caso contrario se espera iniciar con start
         if process != '':
             self.start(self.process, self.argument, self.name, self.time_to_kill, callback, self.enviar_ejecucion)
@@ -123,6 +124,8 @@ class ThreadAdmin(object):
             self.time_to_kill = time_to_kill
             self.enviar_ejecucion = enviar_ejecucion  # opcion de envio como paramtro salida
             if enviar_ejecucion:
+                # envio de ejecicion
+                self.ejecucion.value = True  # Iniciamos con encendido
                 # con envio de ejecucion
                 if argument == '':
                     if name == '':

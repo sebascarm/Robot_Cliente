@@ -150,9 +150,7 @@ class Cliente_TCP(object):
             except Exception as err:
                 self.__estado(-1, "Error SOC: " + str(err))
                 self.desconectar()
-            
-        
-        
+
     def desconectar(self):
         try:
             self.conexion = False
