@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### VENTANA PRINCIPAL 2.1                               ###
+### VENTANA PRINCIPAL 2.2                               ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 21/02/2020                                          ###
+### 26/02/2020                                          ###
+### Objetos no graficos fuera de esta clase             ###
 ### Eventos de fase conection                           ###
 ### Cracion                                             ###
 ###########################################################
@@ -14,7 +15,8 @@ from winform.textbox    import Textbox
 from winform.button     import Button
 from winform.imagen     import Imagen
 # Objetos compuestos
-from compuesto.face_comp import Face_Comp
+# from componentes.comunicacion import Comunicacion
+#from compuesto.face_comp import Face_Comp
 
 import configparser     # lector de archivos de configuracion
 
@@ -28,6 +30,7 @@ CONEXION = CONFIGURACION['CONEXION']
 SERVIDOR = CONEXION['SERVIDOR']
 PUERTO   = CONEXION['PUERTO']
 
+PUERTO2  = str(50002)
 
 class Form_Principal(object):
     def __init__(self, C_Form):
@@ -37,22 +40,28 @@ class Form_Principal(object):
         self.text_ip      = Textbox(C_Form)
         self.labl_port    = Label(C_Form)
         self.text_port    = Textbox(C_Form)
+        self.labl_port2   = Label(C_Form)
+        self.text_port2   = Textbox(C_Form)
         self.bot_conectar = Button(C_Form)
+        self.bot_conec_img = Button(C_Form)
         self.box_imagen   = Imagen(C_Form)
         self.label_fps    = Label(C_Form)
         # objetos sin graficos
-        self.face_comp    = Face_Comp()
+        # self.tpc_cli      = Comunicacion()
+        #self.face_comp    = Face_Comp()
 
         # Configuracion
-        self.labl_titulo.config("Configuración", 10, 10, 140, 25, "centrada")
+        self.labl_titulo.config("Configuración", 40, 10, 110, 25, "centrada")
         self.labl_titulo.set_textSize(16)
         self.labl_ip.config("IP", 10, 40+4, 26, 12,"derecha")
         self.text_ip.config(SERVIDOR, 40, 40, 110, 18)
         self.labl_port.config("Port", 10, 60+4, 26, 12,"derecha")
         self.text_port.config(PUERTO, 40, 60, 110, 18)
-        self.bot_conectar.config("Conectar", 10, 90, 140 , 20)
+        self.labl_port2.config("Port", 10, 80 + 4, 26, 12, "derecha")
+        self.text_port2.config(PUERTO2, 40, 80, 110, 18)
+        self.bot_conectar.config("Conectar", 40, 120, 110 , 20)
+        self.bot_conec_img.config("Conectar Img", 40, 150, 110, 20)
         self.label_fps.config("FPS Procesado: ", 200, 80, 100, 18)
         self.box_imagen.config(200,100,320,240)
 
-        ## Objetos sin graficos
-        self.face_comp.config("192.168.0.24", self.box_imagen, self.label_fps)
+

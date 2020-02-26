@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### FACE COMPUESTO V1.6                                 ###
+### FACE COMPUESTO V1.9                                 ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 21/02/2020                                          ###
+### 26/02/2020                                          ###
+### Puerto, Funcion de envio de datos, Estado           ###
 ### Evento estado de conexion                           ###
 ### Revision de reconexion                              ###
 ### Desconexion                                         ###
@@ -21,7 +22,9 @@ from ia.face_detect2 import Face_Detect2
 
 import time
 import queue  # cola o pila
-
+#Para visualizar
+from winform.imagen import Imagen
+from winform.label import Label
 
 class Face_Comp(object):
     def __init__(self):
@@ -29,23 +32,29 @@ class Face_Comp(object):
         self.fdetect = Face_Detect2()
         self.th_detect = ThreadAdmin()
         self.host = ''
-        self.ob_imagen = ''
-        self.ob_label_fps = ''
+        self.port = ''
+        self.ob_imagen = ''         # type: Imagen
+        self.ob_label_fps = ''      # type: Label
         self.cola_imagen = queue.LifoQueue()
-        self.conectado = False      # Estado de la conexion
+        self.conexion = False      # Estado de la conexion
         self.tiempo = Timer()
         self.evento_conexion = ''   # Evento que devuelve el estado de la conexion
+        self.fun_envio       = ''   # Evento para movimiento de la vista
 
-    def config(self, host, ob_imagen, ob_label_fps):
+    def config(self, host, puerto, ob_imagen, ob_label_fps, fun_envio):
+        # type: (str, int, Imagen, Label, object)->None
         """ Se requiere IP del Servidor y Objeto Imagen
             Devuelve la imagen y los fps en un objeto label
+            fun envio = fun(modulo, comando, valor)
         """
         self.host = host
+        self.port = puerto
         self.ob_imagen = ob_imagen
         self.ob_label_fps = ob_label_fps
-        self.tcp.config(host, 50001, binario=True, callback=self.__call_conexion)
+        self.tcp.config(host, puerto, binario=True, callback=self.__call_conexion)
         self.fdetect.config(Callback_Imagen=self.__call_imagen)
         self.fdetect.config_callback(Func_Unica=self.__call_posdetect)
+        self.fun_envio = fun_envio
 
     def config_eventos(self, evento_conexion=''):
         """evento_conexion: Funcion que devuelve True o False cuando conecta o desconecta
@@ -65,19 +74,19 @@ class Face_Comp(object):
         """ recepcion de datos binarios del servidor tcp"""
         # Conectado
         if codigo == 2:
-            self.conectado = True
+            self.conexion = True
             self.th_detect.start(self.__th_detector, '', 'DETECTOR', enviar_ejecucion=True)
             self.evento_conexion(True) # Devolvemos conectado
         # Desconecado
         elif codigo == 0:
-            self.conectado = False
+            self.conexion = False
             self.evento_conexion(False)    # Devolvemos desconectado
         # Recepcion de datos
         elif codigo == 4:
             self.cola_imagen.put(mensaje)  # encolamos la imgen recibida
         # Errores
         elif codigo == -1:
-            self.conectado = False
+            self.conexion = False
             self.evento_conexion(False)  # Devolvemos desconectado
         # Otros mensajes
         else:
@@ -99,8 +108,8 @@ class Face_Comp(object):
             time.sleep(0.01)
 
     def __call_posdetect(self, x, y):
-        # print(x, y)
         modulo  = "FACE"
         comando = "CENTRAR"
-        valor   = str(x) + "|" + str(y)
-        self.tcp.enviar(modulo + "|" + comando + "|" + valor)
+        valor   = str(x) + "/" + str(y)     # separador de valores /
+        self.fun_envio(modulo, comando, valor)
+

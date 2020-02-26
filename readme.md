@@ -1,6 +1,10 @@
-Robot CLIENTE version 4.8.5
+Robot CLIENTE version 4.8.6
 =====================
 ### Control de cambios
+* 26/02/2020
+    * clase face_comp    v1.9 (puerto, funcion envio, estado)
+    * clase form_princip v2.2 (sin obj no graficos)
+    * clase eventos      v1.1 (objetos no graficos)
 * 21/02/2020
     * clase Thread_Admin v2.4 (re ejecucion)
     * clase servidor_TCP v3.8 (desconexion)
