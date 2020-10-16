@@ -1,6 +1,8 @@
-Robot CLIENTE version 4.8.6
+Robot CLIENTE version 5.0.0
 =====================
 ### Control de cambios
+* 16/10/2020
+    * Uso de pycharm
 * 26/02/2020
     * clase face_comp    v1.9 (puerto, funcion envio, estado)
     * clase form_princip v2.2 (sin obj no graficos)
@@ -29,6 +31,18 @@ Robot CLIENTE version 4.8.6
 -----------
 ## Versiones
 -----------
+Versiones PC
+
+* Entorno virtual en: ent-virtual-cliente_5.0
+* Python 3.8.6 (PC - Pycharm)
+
+* pip                   20.2.3
+* setuptools            50.3.1
+* pygame                1.9.6 
+* opencv-contrib-python 4.4.0.44
+* imutils               0.5.3       (manipulacion de imagen)
+
+
 Versiones LAPTOP
 
 * Entorno virtual (ent-virtual-lap)
@@ -47,9 +61,8 @@ imutils               0.5.3
 otros... (limpiar)
 ```
 
-
-
 Versiones:
+
 * Python 3.6.9 (Linux PC)
 * Requerido:
     * pyGame

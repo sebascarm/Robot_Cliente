@@ -16,7 +16,7 @@ from winform.button     import Button
 from winform.imagen     import Imagen
 # Objetos compuestos
 # from componentes.comunicacion import Comunicacion
-#from compuesto.face_comp import Face_Comp
+# from compuesto.face_comp import Face_Comp
 
 import configparser     # lector de archivos de configuracion
 
@@ -31,6 +31,7 @@ SERVIDOR = CONEXION['SERVIDOR']
 PUERTO   = CONEXION['PUERTO']
 
 PUERTO2  = str(50002)
+
 
 class Form_Principal(object):
     def __init__(self, C_Form):
@@ -48,7 +49,7 @@ class Form_Principal(object):
         self.label_fps    = Label(C_Form)
         # objetos sin graficos
         # self.tpc_cli      = Comunicacion()
-        #self.face_comp    = Face_Comp()
+        # self.face_comp    = Face_Comp()
 
         # Configuracion
         self.labl_titulo.config("Configuración", 40, 10, 110, 25, "centrada")
