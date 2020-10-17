@@ -1,5 +1,5 @@
 ###########################################################
-### EVENTOS v1.2                                        ###
+### EVENTOS v1.3                                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
 ### 17/10/2020                                          ###
@@ -24,8 +24,8 @@ class Eventos(object):
         # Configuracion de objetos sin graficos
         self.tcp_cli    = Comunicacion()
         self.face_comp  = Face_Comp()
-        self.tcp_cli.config("192.168.0.24", 50001, callback=self.evento_conexion)
-        self.face_comp.config("192.168.0.24", 50002, self.objetos.box_imagen, self.objetos.label_fps,self.fun_envio)
+        self.tcp_cli.config("192.168.0.32", 50001, callback=self.evento_conexion)
+        self.face_comp.config("192.168.0.32", 50002, self.objetos.box_imagen, self.objetos.label_fps,self.fun_envio)
         # Metodos de los objetos graficos
         self.objetos.bot_conectar.accion(self.click_conectar)
         self.objetos.bot_conec_img.accion(self.click_conectar_img)

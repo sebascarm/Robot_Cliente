@@ -1,7 +1,8 @@
-Robot CLIENTE version 5.0.1
+Robot CLIENTE version 5.0.2
 =====================
 ### Control de cambios
 * 17/10/2020
+    * clase eventos      v1.3 (Cambio de IP)
     * clase eventos      v1.2 (Control de conexion y Log)
     * clase form_princip v2.3 (Redibujado)
     * clase main3        v5.1 (Nuevo main)
