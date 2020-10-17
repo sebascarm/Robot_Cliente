@@ -1,8 +1,9 @@
 ###########################################################
-### EVENTOS v1.1                                        ###
+### EVENTOS v1.2                                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 26/02/2020                                          ###
+### 17/10/2020                                          ###
+### Control de conexion y Log
 ### Incluye objetos no graficos                         ###
 ### Cracion                                             ###
 ###########################################################
@@ -12,12 +13,14 @@ from componentes.comunicacion import Comunicacion
 from compuesto.face_comp import Face_Comp
 # para visualizacion
 from forms.form_principal import Form_Principal
+from logs.logg import Logg
 
 
 class Eventos(object):
-    def __init__(self, c_objetos):
-        # type: (Form_Principal)->None
+    def __init__(self, c_objetos, c_log):
+        # type: (Form_Principal, Logg)->None    # utilizado para visualizar ayuda
         self.objetos = c_objetos
+        self.log = c_log
         # Configuracion de objetos sin graficos
         self.tcp_cli    = Comunicacion()
         self.face_comp  = Face_Comp()
@@ -55,6 +58,10 @@ class Eventos(object):
             self.objetos.bot_conectar.set_text("Desconectar")
         elif codigo == 0:   # Desconectado
             self.objetos.bot_conectar.set_text("Conectar")
+        elif codigo == -1:  # Error
+            self.objetos.bot_conectar.set_text("Conectar")
+        else:
+            self.log.log(str(codigo) + " " + mensaje, "EVENTOS")
 
     # EVENTOS
     def evento_im_conexion(self, Estado):
