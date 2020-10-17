@@ -1,6 +1,10 @@
-Robot CLIENTE version 5.0.0
+Robot CLIENTE version 5.0.1
 =====================
 ### Control de cambios
+* 17/10/2020
+    * clase eventos      v1.2 (Control de conexion y Log)
+    * clase form_princip v2.3 (Redibujado)
+    * clase main3        v5.1 (Nuevo main)
 * 16/10/2020
     * Uso de pycharm
 * 26/02/2020
