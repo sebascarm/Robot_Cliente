@@ -1,9 +1,10 @@
 ###########################################################
-### EVENTOS v1.3                                        ###
+### EVENTOS v1.4                                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 17/10/2020                                          ###
-### Control de conexion y Log
+### 20/10/2020                                          ###
+### Incorporacion de sensores                           ###
+### Control de conexion y Log                           ###
 ### Incluye objetos no graficos                         ###
 ### Cracion                                             ###
 ###########################################################
@@ -25,14 +26,24 @@ class Eventos(object):
         self.tcp_cli    = Comunicacion()
         self.face_comp  = Face_Comp()
         self.tcp_cli.config("192.168.0.32", 50001, callback=self.evento_conexion)
-        self.face_comp.config("192.168.0.32", 50002, self.objetos.box_imagen, self.objetos.label_fps,self.fun_envio)
+        self.face_comp.config("192.168.0.32", 50002, self.objetos.box_imagen, self.objetos.label_fps, self.fun_envio)
         # Metodos de los objetos graficos
         self.objetos.bot_conectar.accion(self.click_conectar)
         self.objetos.bot_conec_img.accion(self.click_conectar_img)
+        self.objetos.chbox_sens_cent.accion(self.click_chbox_sensor_cent)
+        self.objetos.chbox_sens_izq.accion(self.click_chbox_sensor_izq)
+        self.objetos.chbox_sens_der.accion(self.click_chbox_sensor_der)
+        self.objetos.chbox_sens_bru.accion(self.click_chbox_brujula)
+        self.objetos.bot_update_cent.accion(self.up_sonic_cent_time)
+        self.objetos.bot_update_izq.accion(self.up_sonic_izq_time)
+        self.objetos.bot_update_der.accion(self.up_sonic_der_time)
+        self.objetos.bot_update_bru.accion(self.up_brujula_time)
         # Callback a eventos
         self.face_comp.config_eventos(self.evento_im_conexion)
 
-    # METODOS DE OBJETOS (CLICK DE LOS BOTONES)
+    ###########################################################
+    ### METODOS (ACCIONES DE LOS BOTONES)                   ###
+    ###########################################################
     def click_conectar(self):
         """evento cuando se presiona boton de conexion """
         if self.tcp_cli.conexion:
@@ -51,8 +62,57 @@ class Eventos(object):
             self.objetos.bot_conec_img.set_text("Conectando...")
             self.face_comp.iniciar()
 
+    def click_chbox_sensor_cent(self, estado):
+        """evento cuando se presiona checkbox de sensor central"""
+        if estado:
+            self.tcp_cli.enviar("[SONICO-ON]")
+        else:
+            self.tcp_cli.enviar("[SONICO-OFF]")
 
-    # EVENTOS (CALLBACKS)
+    def click_chbox_sensor_izq(self, estado):
+        """evento cuando se presiona checkbox de sensor izquierdo"""
+        if estado:
+            self.tcp_cli.enviar("[SONICO_IZQ-ON]")
+        else:
+            self.tcp_cli.enviar("[SONICO_IZQ-OFF]")
+
+    def click_chbox_sensor_der(self, estado):
+        """evento cuando se presiona checkbox de sensor derecho"""
+        if estado:
+            self.tcp_cli.enviar("[SONICO_DER-ON]")
+        else:
+            self.tcp_cli.enviar("[SONICO_DER-OFF]")
+
+    def click_chbox_brujula(self, estado):
+        """evento cuando se presiona checkbox de la brujula"""
+        if estado:
+            self.tcp_cli.enviar("[COMPAS-ON]")
+        else:
+            self.tcp_cli.enviar("[COMPAS-OFF]")
+
+    def up_sonic_cent_time(self):
+        """evento cuando se presiona el boton de actualizacion de tiempo"""
+        tiempo = self.objetos.text_speed_cent.text
+        self.tcp_cli.enviar("[SONICO-SPEED]:" + tiempo)
+
+    def up_sonic_izq_time(self):
+        """evento cuando se presiona el boton de actualizacion de tiempo"""
+        tiempo = self.objetos.text_speed_izq.text
+        self.tcp_cli.enviar("[SONICO-IZQ-SPEED]:" + tiempo)
+
+    def up_sonic_der_time(self):
+        """evento cuando se presiona el boton de actualizacion de tiempo"""
+        tiempo = self.objetos.text_speed_der.text
+        self.tcp_cli.enviar("[SONICO-DER-SPEED]:" + tiempo)
+
+    def up_brujula_time(self):
+        """evento cuando se presiona el boton de actualizacion de tiempo"""
+        tiempo = self.objetos.text_speed_bru.text
+        self.tcp_cli.enviar("[COMPAS-SPEED]:" + tiempo)
+
+    ###########################################################
+    ### EVENTOS (CALLBACK DE CONEXION)                      ###
+    ###########################################################
     def evento_conexion(self, codigo, mensaje):
         if codigo == 2:     # Conectado
             self.objetos.bot_conectar.set_text("Desconectar")
@@ -60,8 +120,34 @@ class Eventos(object):
             self.objetos.bot_conectar.set_text("Conectar")
         elif codigo == -1:  # Error
             self.objetos.bot_conectar.set_text("Conectar")
+        elif codigo == 4:   # Recepcion de datos
+            self.recepcion_datos(mensaje)
         else:
             self.log.log(str(codigo) + " " + mensaje, "EVENTOS")
+
+    ###########################################################
+    ### PROCESAMIENTO DE DATOS RECIBIDOS                    ###
+    ###########################################################
+    def recepcion_datos(self, datos):
+        datos = datos.replace("[", "", 1)
+        datos = datos.replace("]", "", 1)
+        try:
+            self.log.log("RECP: " + datos)
+            mensaje_split = str(datos).split(":", 1)
+            # recepcion de 2 valores (parametros)
+            if len(mensaje_split) > 1:
+                parametro = mensaje_split[0]    # Parametro
+                valor     = mensaje_split[1]    # valor como string
+                valor_f   = float(valor)        # valor como float
+                valor_int = int(valor_f)        # valor como integer
+                print(valor_int)
+                if parametro == "COMPAS":
+                    self.objetos.compbox.rotar(int(valor_int))
+                if parametro == "SONICO":
+                    self.objetos.prog_cent.set_text(str(valor_int))
+
+        except Exception as e:
+            self.log.log("ERR: " + str(e))
 
     # EVENTOS
     def evento_im_conexion(self, Estado):
@@ -69,6 +155,8 @@ class Eventos(object):
             self.objetos.bot_conec_img.set_text("Desconectar")
         else:
             self.objetos.bot_conec_img.set_text("Conectar")
+
+
 
     # ENVIOS
     def fun_envio(self, modulo, comando, valor):
