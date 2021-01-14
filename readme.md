@@ -1,6 +1,8 @@
-Robot CLIENTE version 5.0.3 (PC)
+Robot CLIENTE version 5.1.0 (PC)
 =====================
 ### Control de cambios
+* 14/01/2021
+    * clase eventos      v1.6 (Cambio de IP y sensores) 
 * 20/10/2020
     * clase eventos      v1.4 (Agregado de sensores)
     * clase form_princip v2.4 (Agregado de sensores)
@@ -41,7 +43,7 @@ Robot CLIENTE version 5.0.3 (PC)
 -----------
 Versiones PC
 
-* Entorno virtual en: ent-virtual-cliente_5.0
+* Entorno virtual en: ent-virtual-cliente_5.1
 * Python 3.8.6 (PC - Pycharm)
 
 * pip                   20.2.3
@@ -51,7 +53,7 @@ Versiones PC
 * imutils               0.5.3       (manipulacion de imagen)
 
 
-Versiones LAPTOP
+Versiones LAPTOP (Desactualizado)
 
 * Entorno virtual (ent-virtual-lap)
 * Python v3.7.4

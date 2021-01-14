@@ -1,8 +1,9 @@
 ###########################################################
-### EVENTOS v1.4                                        ###
+### EVENTOS v1.6                                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 20/10/2020                                          ###
+### 09/01/2021                                          ###
+### Cambio de Ip en conexion                            ###
 ### Incorporacion de sensores                           ###
 ### Control de conexion y Log                           ###
 ### Incluye objetos no graficos                         ###
@@ -25,8 +26,8 @@ class Eventos(object):
         # Configuracion de objetos sin graficos
         self.tcp_cli    = Comunicacion()
         self.face_comp  = Face_Comp()
-        self.tcp_cli.config("192.168.0.32", 50001, callback=self.evento_conexion)
-        self.face_comp.config("192.168.0.32", 50002, self.objetos.box_imagen, self.objetos.label_fps, self.fun_envio)
+        self.tcp_cli.config("192.168.0.34", 50001, callback=self.evento_conexion)
+        self.face_comp.config("192.168.0.34", 50002, self.objetos.box_imagen, self.objetos.label_fps, self.fun_envio)
         # Metodos de los objetos graficos
         self.objetos.bot_conectar.accion(self.click_conectar)
         self.objetos.bot_conec_img.accion(self.click_conectar_img)
@@ -65,9 +66,9 @@ class Eventos(object):
     def click_chbox_sensor_cent(self, estado):
         """evento cuando se presiona checkbox de sensor central"""
         if estado:
-            self.tcp_cli.enviar("[SONICO-ON]")
+            self.tcp_cli.enviar("SONICO|ENCENDIDO|1")
         else:
-            self.tcp_cli.enviar("[SONICO-OFF]")
+            self.tcp_cli.enviar("SONICO|ENCENDIDO|0")
 
     def click_chbox_sensor_izq(self, estado):
         """evento cuando se presiona checkbox de sensor izquierdo"""
@@ -93,7 +94,7 @@ class Eventos(object):
     def up_sonic_cent_time(self):
         """evento cuando se presiona el boton de actualizacion de tiempo"""
         tiempo = self.objetos.text_speed_cent.text
-        self.tcp_cli.enviar("[SONICO-SPEED]:" + tiempo)
+        self.tcp_cli.enviar("SONICO|SPEED|" + tiempo)
 
     def up_sonic_izq_time(self):
         """evento cuando se presiona el boton de actualizacion de tiempo"""
@@ -143,8 +144,12 @@ class Eventos(object):
                 print(valor_int)
                 if parametro == "COMPAS":
                     self.objetos.compbox.rotar(int(valor_int))
-                if parametro == "SONICO":
+                if parametro == "SONICO-CENT":
                     self.objetos.prog_cent.set_text(str(valor_int))
+                if parametro == "SONICO-IZQ":
+                    self.objetos.prog_izq.set_text(str(valor_int))
+                if parametro == "SONICO-DER":
+                    self.objetos.prog_der.set_text(str(valor_int))
 
         except Exception as e:
             self.log.log("ERR: " + str(e))
