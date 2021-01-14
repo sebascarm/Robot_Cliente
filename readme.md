@@ -53,10 +53,19 @@ Versiones PC
 * imutils               0.5.3       (manipulacion de imagen)
 
 
-Versiones LAPTOP (Desactualizado)
+Versiones LAPTOP (Actualizado)
 
-* Entorno virtual (ent-virtual-lap)
-* Python v3.7.4
+* Entorno virtual en: ent-virtual-cliente_5.1
+* Python 3.8.6 (PC - Pycharm)
+
+* imutils               0.5.3       (manipulacion de imagen)
+* numpy                 1.19.5
+* opencv-contrib-python 4.5.1.48
+* pip                   20.3.3
+* pygame                2.0.1
+* setuptools            51.1.2
+ 
+
 
 ```
 Package               Version
