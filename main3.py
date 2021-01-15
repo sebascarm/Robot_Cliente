@@ -8,7 +8,7 @@
 ### Cracion                                              ###
 ############################################################
 
-from componentes.logg import Logg
+from componentes.logg     import Logg
 
 from winform.screen       import Screen
 from winform.form         import Form

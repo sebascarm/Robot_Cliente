@@ -1,8 +1,11 @@
 ###########################################################
-### EVENTOS v1.6                                        ###
+### EVENTOS v1.7                                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 09/01/2021                                          ###
+### 15/01/2021                                          ###
+### Uso del archivo de configuracion                    ###
+### Guardado de archivo de configuracion                ###
+### Borrado de envio de update para sensores iz y der   ###
 ### Cambio de Ip en conexion                            ###
 ### Incorporacion de sensores                           ###
 ### Control de conexion y Log                           ###
@@ -10,6 +13,7 @@
 ### Cracion                                             ###
 ###########################################################
 
+import config
 
 from componentes.comunicacion import Comunicacion
 from compuesto.face_comp import Face_Comp
@@ -26,18 +30,17 @@ class Eventos(object):
         # Configuracion de objetos sin graficos
         self.tcp_cli    = Comunicacion()
         self.face_comp  = Face_Comp()
-        self.tcp_cli.config("192.168.0.34", 50001, callback=self.evento_conexion)
-        self.face_comp.config("192.168.0.34", 50002, self.objetos.box_imagen, self.objetos.label_fps, self.fun_envio)
+        self.tcp_cli.config(config.SERVIDOR, config.PUERTO, callback=self.evento_conexion)
+        self.face_comp.config(config.SERVIDOR, config.PUERTO_IMG, self.objetos.box_imagen, self.objetos.label_fps, self.fun_envio)
         # Metodos de los objetos graficos
         self.objetos.bot_conectar.accion(self.click_conectar)
         self.objetos.bot_conec_img.accion(self.click_conectar_img)
+        self.objetos.bot_guardar.accion(self.click_guardar)
         self.objetos.chbox_sens_cent.accion(self.click_chbox_sensor_cent)
         self.objetos.chbox_sens_izq.accion(self.click_chbox_sensor_izq)
         self.objetos.chbox_sens_der.accion(self.click_chbox_sensor_der)
         self.objetos.chbox_sens_bru.accion(self.click_chbox_brujula)
         self.objetos.bot_update_cent.accion(self.up_sonic_cent_time)
-        self.objetos.bot_update_izq.accion(self.up_sonic_izq_time)
-        self.objetos.bot_update_der.accion(self.up_sonic_der_time)
         self.objetos.bot_update_bru.accion(self.up_brujula_time)
         # Callback a eventos
         self.face_comp.config_eventos(self.evento_im_conexion)
@@ -62,6 +65,15 @@ class Eventos(object):
         else:
             self.objetos.bot_conec_img.set_text("Conectando...")
             self.face_comp.iniciar()
+
+    def click_guardar(self):
+        """evento cuando se presiona boton de guardar"""
+        config.CONFIGURACION.set('CONEXION', 'SERVIDOR', self.objetos.text_ip.text)
+        config.CONFIGURACION.set('CONEXION', 'PUERTO', self.objetos.text_port.text)
+        config.CONFIGURACION.set('CONEXION', 'PUERTO_IMG', self.objetos.text_port2.text)
+        config.CONFIGURACION.set('SONICO', 'UPDATE', self.objetos.text_speed_cent.text)
+        with open(config.ARCHIVO, 'w') as archivo:
+            config.CONFIGURACION.write(archivo) # salvamos el archivo
 
     def click_chbox_sensor_cent(self, estado):
         """evento cuando se presiona checkbox de sensor central"""
@@ -95,16 +107,6 @@ class Eventos(object):
         """evento cuando se presiona el boton de actualizacion de tiempo"""
         tiempo = self.objetos.text_speed_cent.text
         self.tcp_cli.enviar("SONICO|SPEED|" + tiempo)
-
-    def up_sonic_izq_time(self):
-        """evento cuando se presiona el boton de actualizacion de tiempo"""
-        tiempo = self.objetos.text_speed_izq.text
-        self.tcp_cli.enviar("[SONICO-IZQ-SPEED]:" + tiempo)
-
-    def up_sonic_der_time(self):
-        """evento cuando se presiona el boton de actualizacion de tiempo"""
-        tiempo = self.objetos.text_speed_der.text
-        self.tcp_cli.enviar("[SONICO-DER-SPEED]:" + tiempo)
 
     def up_brujula_time(self):
         """evento cuando se presiona el boton de actualizacion de tiempo"""

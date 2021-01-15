@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-### VENTANA PRINCIPAL 2.4                               ###
+### VENTANA PRINCIPAL 2.5                               ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 20/10/2020                                          ###
-### Agregado de sensores
+### 15/01/2021                                          ###
+### uso del archivo de configuracion                    ###
+### Agregado de sensores                                ###
 ### Redibujado                                          ###
 ### Objetos no graficos fuera de esta clase             ###
 ### Eventos de fase conection                           ###
@@ -24,17 +25,7 @@ from winform.progress   import Progress
 # from componentes.comunicacion import Comunicacion
 # from compuesto.face_comp import Face_Comp
 
-import configparser     # lector de archivos de configuracion
-
-import os
-# print(os.path.join(os.getcwd(), '../config.cfg'))
-CONFIGURACION = configparser.ConfigParser()
-CONFIGURACION.read('config.cfg')
-CONEXION = CONFIGURACION['CONEXION']
-SERVIDOR = CONEXION['SERVIDOR']
-PUERTO   = CONEXION['PUERTO']
-
-PUERTO2  = str(50002)
+import config
 
 class Form_Principal(object):
     def __init__(self, C_Form):
@@ -83,11 +74,11 @@ class Form_Principal(object):
         self.labl_titulo.config("Configuración", 40, 10, 120, 25, "centrada")
         self.labl_titulo.set_textSize(16)
         self.labl_ip.config("IP", 10, 40+4, 26, 12,"derecha")
-        self.text_ip.config(SERVIDOR, 40, 40, 120, 18)
+        self.text_ip.config(config.SERVIDOR, 40, 40, 120, 18)
         self.labl_port.config("Port", 10, 60+4, 26, 12,"derecha")
-        self.text_port.config(PUERTO, 40, 60, 120, 18)
+        self.text_port.config(config.PUERTO, 40, 60, 120, 18)
         self.labl_port2.config("Port", 10, 80 + 4, 26, 12, "derecha")
-        self.text_port2.config(PUERTO2, 40, 80, 120, 18)
+        self.text_port2.config(config.PUERTO_IMG, 40, 80, 120, 18)
         self.bot_conectar.config("Conectar", 40, 120, 120, 20)
         self.bot_conec_img.config("Conectar Img", 40, 150, 120, 20)
         self.bot_guardar.config("Guardar", 40, 180, 120, 20)
@@ -96,7 +87,7 @@ class Form_Principal(object):
         self.labl_sensores.set_textSize(12)
         # sensores
         self.chbox_sens_cent.config("Sonico Central", 40, 260, 120, 18)
-        self.text_speed_cent.config("1", 40, 280, 120, 18)
+        self.text_speed_cent.config(config.UPDATE_SONICO, 40, 280, 120, 18)
         self.bot_update_cent.config("Update", 40, 300, 120, 18)
         self.chbox_sens_izq.config("Sonico Izquierdo", 40, 340, 120, 18)
         self.text_speed_izq.config("1", 40, 360, 120, 18)
