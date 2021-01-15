@@ -1,6 +1,10 @@
-Robot CLIENTE version 5.1.0 (PC)
+Robot CLIENTE version 5.1.1 (PC)
 =====================
 ### Control de cambios
+* 15/01/2021
+    * clase form         v2.5 (uso de archivo de configuracion)
+    * clase eventos      v1.7 (uso de archivo de config)
+    * config.py          v1.0 (archivo de variables globales)   
 * 14/01/2021
     * clase eventos      v1.6 (Cambio de IP y sensores) 
 * 20/10/2020
