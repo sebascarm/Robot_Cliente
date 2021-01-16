@@ -1,6 +1,9 @@
-Robot CLIENTE version 5.1.1 (PC)
+Robot CLIENTE version 5.1.2 (PC)
 =====================
 ### Control de cambios
+* 16/01/2021
+    * clase Drawbox      v1.0 (creacion)
+    * clase eventos      v1.8 (envio de brujula)
 * 15/01/2021
     * clase form         v2.5 (uso de archivo de configuracion)
     * clase eventos      v1.7 (uso de archivo de config)
