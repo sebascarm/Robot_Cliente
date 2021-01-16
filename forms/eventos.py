@@ -1,8 +1,9 @@
 ###########################################################
-### EVENTOS v1.7                                        ###
+### EVENTOS v1.8                                        ###
 ###########################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                     ###
-### 15/01/2021                                          ###
+### 16/01/2021                                          ###
+### Envio de Brujula                                    ###
 ### Uso del archivo de configuracion                    ###
 ### Guardado de archivo de configuracion                ###
 ### Borrado de envio de update para sensores iz y der   ###
@@ -82,6 +83,13 @@ class Eventos(object):
         else:
             self.tcp_cli.enviar("SONICO|ENCENDIDO|0")
 
+    def click_chbox_brujula(self, estado):
+        """evento cuando se presiona checkbox de la brujula"""
+        if estado:
+            self.tcp_cli.enviar("COMPAS|ENCENDIDO|1")
+        else:
+            self.tcp_cli.enviar("COMPAS|ENCENDIDO|0")
+
     def click_chbox_sensor_izq(self, estado):
         """evento cuando se presiona checkbox de sensor izquierdo"""
         if estado:
@@ -96,12 +104,7 @@ class Eventos(object):
         else:
             self.tcp_cli.enviar("[SONICO_DER-OFF]")
 
-    def click_chbox_brujula(self, estado):
-        """evento cuando se presiona checkbox de la brujula"""
-        if estado:
-            self.tcp_cli.enviar("[COMPAS-ON]")
-        else:
-            self.tcp_cli.enviar("[COMPAS-OFF]")
+
 
     def up_sonic_cent_time(self):
         """evento cuando se presiona el boton de actualizacion de tiempo"""
@@ -111,7 +114,7 @@ class Eventos(object):
     def up_brujula_time(self):
         """evento cuando se presiona el boton de actualizacion de tiempo"""
         tiempo = self.objetos.text_speed_bru.text
-        self.tcp_cli.enviar("[COMPAS-SPEED]:" + tiempo)
+        self.tcp_cli.enviar("COMPAS|SPEED|" + tiempo)
 
     ###########################################################
     ### EVENTOS (CALLBACK DE CONEXION)                      ###
