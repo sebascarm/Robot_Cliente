@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ############################################################
-### MODULO PRINCIPAL 5.1                                 ###
+### MODULO PRINCIPAL 5.2                                 ###
 ############################################################
 ### ULTIMA MODIFICACION DOCUMENTADA                      ###
-### 17/10/2020                                           ###
+### 16/01/2021                                           ###
+### Cambio de resolucion                                 ###
 ### Cracion                                              ###
 ############################################################
 
@@ -15,7 +16,7 @@ from winform.form         import Form
 from forms.form_principal import Form_Principal
 from forms.eventos        import Eventos
 
-RESOLUCION  = 1024, 768
+RESOLUCION  = 1500, 768
 COLOR_FORM  = 20, 20, 40
 POS_VENTANA = 0, 0
 
